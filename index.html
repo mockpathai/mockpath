@@ -25,7 +25,7 @@ h1 em{font-style:italic;color:var(--accent2)}
 .cta:hover{opacity:0.85}
 .cta:disabled{opacity:0.6;cursor:not-allowed}
 .social-proof{font-size:0.78rem;color:var(--muted);letter-spacing:0.03em}
-.msg{font-size:0.85rem;margin-top:0.5rem;display:none}
+.msg{font-size:0.85rem;font-weight:500;margin-top:0.5rem;display:none}
 .msg.success{color:var(--accent)}
 .msg.error{color:#c85030}
 .features{padding:3rem 2.5rem 4rem;max-width:900px;margin:0 auto}
@@ -64,7 +64,7 @@ h1 em{font-style:italic;color:var(--accent2)}
     <button class="cta" id="cta-btn" onclick="handleJoin()">Get early access</button>
   </div>
   <p class="social-proof">Be among the first 500 founders &amp; job seekers on the platform</p>
-  <p class="msg success" id="msg-success">🎉 You're on the list! We'll reach out soon.</p>
+  <p class="msg success" id="msg-success">You're on the list! We'll reach out soon.</p>
   <p class="msg error" id="msg-error">Something went wrong. Please try again.</p>
 </section>
 
@@ -97,8 +97,7 @@ h1 em{font-style:italic;color:var(--accent2)}
 </footer>
 
 <script>
-
-  async function handleJoin() {
+async function handleJoin() {
   const emailInput = document.getElementById('email');
   const btn = document.getElementById('cta-btn');
   const email = emailInput.value.trim();
@@ -112,22 +111,27 @@ h1 em{font-style:italic;color:var(--accent2)}
   btn.disabled = true;
   btn.textContent = 'Adding you...';
 
-  const response = await fetch('/api/subscribe', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email })
-  });
+  try {
+    const response = await fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
 
-  if (response.ok) {
-    document.querySelector('.form-row').style.display = 'none';
-    document.getElementById('msg-success').style.display = 'block';
-  } else {
+    if (response.ok) {
+      document.querySelector('.form-row').style.display = 'none';
+      document.querySelector('.social-proof').style.display = 'none';
+      document.getElementById('msg-success').style.display = 'block';
+    } else {
+      throw new Error('Failed');
+    }
+  } catch (err) {
     btn.disabled = false;
     btn.textContent = 'Get early access';
     document.getElementById('msg-error').style.display = 'block';
+    setTimeout(() => document.getElementById('msg-error').style.display = 'none', 3000);
   }
 }
-
 
 document.getElementById('email').addEventListener('keydown', function(ev) {
   if (ev.key === 'Enter') handleJoin();
