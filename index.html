@@ -97,11 +97,10 @@ h1 em{font-style:italic;color:var(--accent2)}
 </footer>
 
 <script>
-async function handleJoin() {
+
+  async function handleJoin() {
   const emailInput = document.getElementById('email');
   const btn = document.getElementById('cta-btn');
-  const successMsg = document.getElementById('msg-success');
-  const errorMsg = document.getElementById('msg-error');
   const email = emailInput.value.trim();
 
   if (!email || !email.includes('@')) {
@@ -113,27 +112,22 @@ async function handleJoin() {
   btn.disabled = true;
   btn.textContent = 'Adding you...';
 
-  try {
-const response = await fetch('/api/subscribe', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ email: email })
-});
+  const response = await fetch('/api/subscribe', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email })
+  });
 
-    if (response.ok || response.status === 204) {
-      document.querySelector('.form-row').style.display = 'none';
-      document.querySelector('.social-proof').style.display = 'none';
-      successMsg.style.display = 'block';
-    } else {
-      throw new Error('API error');
-    }
-  } catch (err) {
+  if (response.ok) {
+    document.querySelector('.form-row').style.display = 'none';
+    document.getElementById('msg-success').style.display = 'block';
+  } else {
     btn.disabled = false;
     btn.textContent = 'Get early access';
-    errorMsg.style.display = 'block';
-    setTimeout(() => errorMsg.style.display = 'none', 3000);
+    document.getElementById('msg-error').style.display = 'block';
   }
 }
+
 
 document.getElementById('email').addEventListener('keydown', function(ev) {
   if (ev.key === 'Enter') handleJoin();
