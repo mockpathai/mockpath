@@ -1,11 +1,13 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MockPath — AI-Powered Resume & Job Matching</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --ink:#0f0e0d;--muted:#6b6860;--accent:#1a3a2a;--accent2:#c8a96e;
-  --bg:#faf9f6;--surface:#f2f0ea;--border:#e0ddd4;
-}
+:root{--ink:#0f0e0d;--muted:#6b6860;--accent:#1a3a2a;--accent2:#c8a96e;--bg:#faf9f6;--surface:#f2f0ea;--border:#e0ddd4;}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden}
 .nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 2.5rem;border-bottom:0.5px solid var(--border)}
 .logo{font-family:'Playfair Display',serif;font-size:1.4rem;letter-spacing:-0.01em;color:var(--accent)}
@@ -21,7 +23,11 @@ h1 em{font-style:italic;color:var(--accent2)}
 .form-row input:focus{border-color:var(--accent)}
 .cta{background:var(--accent);color:#fff;padding:0.75rem 1.5rem;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:500;border:none;cursor:pointer;white-space:nowrap;transition:opacity 0.2s}
 .cta:hover{opacity:0.85}
+.cta:disabled{opacity:0.6;cursor:not-allowed}
 .social-proof{font-size:0.78rem;color:var(--muted);letter-spacing:0.03em}
+.msg{font-size:0.85rem;margin-top:0.5rem;display:none}
+.msg.success{color:var(--accent)}
+.msg.error{color:#c85030}
 .features{padding:3rem 2.5rem 4rem;max-width:900px;margin:0 auto}
 .feat-label{font-size:0.72rem;letter-spacing:0.1em;color:var(--muted);text-align:center;margin-bottom:2rem}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--border);border:0.5px solid var(--border);border-radius:16px;overflow:hidden}
@@ -40,8 +46,9 @@ h1 em{font-style:italic;color:var(--accent2)}
 .footer{border-top:0.5px solid var(--border);padding:1.5rem 2.5rem;display:flex;justify-content:space-between;align-items:center}
 .footer-logo{font-family:'Playfair Display',serif;font-size:1rem;color:var(--accent)}
 .footer p{font-size:0.75rem;color:var(--muted)}
-#thanks{display:none;color:var(--accent);font-size:0.85rem;font-weight:500;margin-top:0.5rem}
 </style>
+</head>
+<body>
 
 <nav class="nav">
   <div class="logo">mock<span>path</span></div>
@@ -54,10 +61,11 @@ h1 em{font-style:italic;color:var(--accent2)}
   <p class="sub">Upload your resume once. MockPath scans jobs across the web, scores your fit, writes cover letters, and applies — while you sleep.</p>
   <div class="form-row">
     <input type="email" id="email" placeholder="your@email.com" />
-    <button class="cta" onclick="handleJoin()">Get early access</button>
+    <button class="cta" id="cta-btn" onclick="handleJoin()">Get early access</button>
   </div>
   <p class="social-proof">Be among the first 500 founders &amp; job seekers on the platform</p>
-  <p id="thanks">You're on the list! We'll reach out soon.</p>
+  <p class="msg success" id="msg-success">🎉 You're on the list! We'll reach out soon.</p>
+  <p class="msg error" id="msg-error">Something went wrong. Please try again.</p>
 </section>
 
 <div class="divider"></div>
@@ -65,63 +73,21 @@ h1 em{font-style:italic;color:var(--accent2)}
 <section class="features">
   <p class="feat-label">WHAT MOCKPATH DOES</p>
   <div class="grid">
-    <div class="card">
-      <div class="card-icon">📄</div>
-      <h3>Resume scanner</h3>
-      <p>AI parses your resume and extracts skills, experience, and keywords in seconds.</p>
-    </div>
-    <div class="card">
-      <div class="card-icon">🎯</div>
-      <h3>Job matching</h3>
-      <p>Scans thousands of live job postings and ranks them by compatibility score.</p>
-    </div>
-    <div class="card">
-      <div class="card-icon">✍️</div>
-      <h3>Cover letter AI</h3>
-      <p>Auto-generates a tailored cover letter for each job in your voice.</p>
-    </div>
-    <div class="card">
-      <div class="card-icon">📊</div>
-      <h3>Resume score</h3>
-      <p>ATS compatibility score with actionable tips to get past the bots.</p>
-    </div>
-    <div class="card">
-      <div class="card-icon">🔗</div>
-      <h3>LinkedIn optimizer</h3>
-      <p>Rewrites your LinkedIn profile for maximum recruiter discoverability.</p>
-    </div>
-    <div class="card">
-      <div class="card-icon">⚡</div>
-      <h3>Auto apply</h3>
-      <p>One-click application to matching jobs. Set it, forget it, get callbacks.</p>
-    </div>
+    <div class="card"><div class="card-icon">📄</div><h3>Resume scanner</h3><p>AI parses your resume and extracts skills, experience, and keywords in seconds.</p></div>
+    <div class="card"><div class="card-icon">🎯</div><h3>Job matching</h3><p>Scans thousands of live job postings and ranks them by compatibility score.</p></div>
+    <div class="card"><div class="card-icon">✍️</div><h3>Cover letter AI</h3><p>Auto-generates a tailored cover letter for each job in your voice.</p></div>
+    <div class="card"><div class="card-icon">📊</div><h3>Resume score</h3><p>ATS compatibility score with actionable tips to get past the bots.</p></div>
+    <div class="card"><div class="card-icon">🔗</div><h3>LinkedIn optimizer</h3><p>Rewrites your LinkedIn profile for maximum recruiter discoverability.</p></div>
+    <div class="card"><div class="card-icon">⚡</div><h3>Auto apply</h3><p>One-click application to matching jobs. Set it, forget it, get callbacks.</p></div>
   </div>
 </section>
 
 <section class="how">
   <h2>How it works</h2>
   <div class="steps">
-    <div class="step">
-      <div class="step-num">01</div>
-      <div class="step-body">
-        <h4>Upload your resume</h4>
-        <p>Drop your PDF or paste your LinkedIn URL. AI extracts your full profile in under 10 seconds.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">02</div>
-      <div class="step-body">
-        <h4>See your matches</h4>
-        <p>MockPath scans thousands of live jobs and shows you the best fits ranked by a match score.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">03</div>
-      <div class="step-body">
-        <h4>Apply with one click</h4>
-        <p>Review your AI cover letter, customize if you want, and apply — all from one dashboard.</p>
-      </div>
-    </div>
+    <div class="step"><div class="step-num">01</div><div class="step-body"><h4>Upload your resume</h4><p>Drop your PDF or paste your LinkedIn URL. AI extracts your full profile in under 10 seconds.</p></div></div>
+    <div class="step"><div class="step-num">02</div><div class="step-body"><h4>See your matches</h4><p>MockPath scans thousands of live jobs and shows you the best fits ranked by a match score.</p></div></div>
+    <div class="step"><div class="step-num">03</div><div class="step-body"><h4>Apply with one click</h4><p>Review your AI cover letter, customize if you want, and apply — all from one dashboard.</p></div></div>
   </div>
 </section>
 
@@ -131,15 +97,55 @@ h1 em{font-style:italic;color:var(--accent2)}
 </footer>
 
 <script>
-function handleJoin(){
-  const e=document.getElementById('email');
-  if(e.value&&e.value.includes('@')){
-    document.querySelector('.form-row').style.display='none';
-    document.getElementById('thanks').style.display='block';
-  } else {
-    e.style.borderColor='#c85030';
-    setTimeout(()=>e.style.borderColor='',1500);
+async function handleJoin() {
+  const emailInput = document.getElementById('email');
+  const btn = document.getElementById('cta-btn');
+  const successMsg = document.getElementById('msg-success');
+  const errorMsg = document.getElementById('msg-error');
+  const email = emailInput.value.trim();
+
+  if (!email || !email.includes('@')) {
+    emailInput.style.borderColor = '#c85030';
+    setTimeout(() => emailInput.style.borderColor = '', 1500);
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Adding you...';
+
+  try {
+    const response = await fetch('https://api.brevo.com/v3/contacts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'api-key': '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'
+      },
+      body: JSON.stringify({
+        email: email,
+        listIds: [2],
+        updateEnabled: true
+      })
+    });
+
+    if (response.ok || response.status === 204) {
+      document.querySelector('.form-row').style.display = 'none';
+      document.querySelector('.social-proof').style.display = 'none';
+      successMsg.style.display = 'block';
+    } else {
+      throw new Error('API error');
+    }
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = 'Get early access';
+    errorMsg.style.display = 'block';
+    setTimeout(() => errorMsg.style.display = 'none', 3000);
   }
 }
-document.getElementById('email').addEventListener('keydown',function(ev){if(ev.key==='Enter')handleJoin()});
+
+document.getElementById('email').addEventListener('keydown', function(ev) {
+  if (ev.key === 'Enter') handleJoin();
+});
 </script>
+
+</body>
+</html>
