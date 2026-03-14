@@ -114,18 +114,11 @@ async function handleJoin() {
   btn.textContent = 'Adding you...';
 
   try {
-    const response = await fetch('https://api.brevo.com/v3/contacts', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'api-key': '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'
-      },
-      body: JSON.stringify({
-        email: email,
-        listIds: [2],
-        updateEnabled: true
-      })
-    });
+const response = await fetch('/api/subscribe', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ email: email })
+});
 
     if (response.ok || response.status === 204) {
       document.querySelector('.form-row').style.display = 'none';
